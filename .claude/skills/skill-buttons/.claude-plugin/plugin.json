@@ -1,0 +1,1 @@
+{ "name": "skill-buttons", "version": "0.1.0", "description": "채팅 옆 패널: 입력칸 내용과 함께 스킬 요청을 버튼 한 번으로 전송", "types": "./types/index.d.ts" }

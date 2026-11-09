@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>고정 탭바</title>
+<style>
+  :root {
+    --bg: #f7f7f8;
+    --surface: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6b6b70;
+    --border: #e2e2e6;
+    --accent: #2563eb;
+    --accent-text: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141416;
+      --surface: #1f1f23;
+      --text: #f2f2f4;
+      --muted: #a0a0a8;
+      --border: #33333a;
+      --accent: #4f8cff;
+      --accent-text: #ffffff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* 고정 탭바 */
+  .tabbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    flex: 0 0 auto;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    cursor: pointer;
+  }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] {
+    color: var(--text);
+    font-weight: 600;
+    background: var(--bg);
+  }
+  .spacer { flex: 1; }
+  .action {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .action:active { transform: translateY(1px); }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 16px 40px; /* 탭바 높이만큼 위쪽 여백 */
+  }
+  .panel[hidden] { display: none; }
+  .panel p { line-height: 1.7; color: var(--muted); }
+
+  .toast {
+    position: fixed;
+    left: 50%; bottom: 24px;
+    transform: translateX(-50%);
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--text);
+    color: var(--bg);
+    opacity: 0;
+    transition: opacity .2s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+  <nav class="tabbar" role="tablist" aria-label="메인 탭">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="home" id="tab-home">홈</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="about" id="tab-about">소개</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="contact" id="tab-contact">연락처</button>
+    <span class="spacer"></span>
+    <button class="action" id="actionBtn" type="button">버튼</button>
+  </nav>
+
+  <main>
+    <section class="panel" id="home" role="tabpanel" aria-labelledby="tab-home">
+      <h1>홈</h1>
+      <p>상단 탭바는 스크롤해도 화면 위에 고정되어 있습니다.</p>
+      <p style="height:1200px">아래로 스크롤해 보세요 ↓</p>
+      <p>맨 아래입니다. 탭바가 여전히 위에 보입니다.</p>
+    </section>
+    <section class="panel" id="about" role="tabpanel" aria-labelledby="tab-about" hidden>
+      <h1>소개</h1>
+      <p>소개 내용을 여기에 작성하세요.</p>
+    </section>
+    <section class="panel" id="contact" role="tabpanel" aria-labelledby="tab-contact" hidden>
+      <h1>연락처</h1>
+      <p>연락처 내용을 여기에 작성하세요.</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on);
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      window.scrollTo(0, 0);
+    });
+  });
+
+  // 버튼 동작: 원하는 기능으로 바꾸세요
+  const toast = document.getElementById('toast');
+  let timer;
+  document.getElementById('actionBtn').addEventListener('click', () => {
+    toast.textContent = '버튼을 눌렀습니다!';
+    toast.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(() => toast.classList.remove('show'), 1500);
+  });
+</script>
+</body>
+</html>
