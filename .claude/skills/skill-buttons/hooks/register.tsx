@@ -16,24 +16,9 @@ const ACTIONS: Action[] = [
     build: t => `humanizer-ko 스킬을 사용해서 아래 글의 AI티를 빼고 자연스러운 한국어로 다듬어줘.\n\n${t}`,
   },
   {
-    key: 'humanizer',
-    label: 'AI티 빼기 (영어)',
-    build: t => `Use the humanizer skill to rewrite the following text so it no longer reads as AI-written.\n\n${t}`,
-  },
-  {
     key: 'seo',
     label: 'SEO 점검',
-    build: t => `seo 스킬을 사용해서 다음 URL의 SEO를 분석해줘: ${t}`,
-  },
-  {
-    key: 'hyperframes',
-    label: '영상 만들기',
-    build: t => `hyperframes 스킬을 사용해서 영상 제작을 시작해줘.\n\n요청 내용:\n${t}`,
-  },
-  {
-    key: 'notebooklm',
-    label: 'NotebookLM 질문',
-    build: t => `notebooklm 스킬을 사용해서 내 노트북에 다음을 질문해줘:\n\n${t}`,
+    build: t => `seo 스킬(claude-seo, seo-aeo-geo-ultimate 아님)을 사용해서 다음 URL의 SEO를 분석해줘: ${t}`,
   },
 ]
 
