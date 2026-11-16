@@ -130,14 +130,40 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js"></script>
 <script>
   const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let tl;
+
+  // 탭 전환: 현재 패널은 살짝 위로 사라지고, 새 패널 내용은 아래에서 차례로 올라옴
+  function swap(current, next) {
+    if (current) {
+      current.hidden = true;
+      if (window.gsap) gsap.set([current, ...current.children], { clearProps: 'opacity,transform' });
+    }
+    next.hidden = false;
+    window.scrollTo(0, 0);
+  }
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      tabs.forEach(t => {
-        const on = t === tab;
-        t.setAttribute('aria-selected', on);
-        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-      });
-      window.scrollTo(0, 0);
+      if (tab.getAttribute('aria-selected') === 'true') return;
+      tabs.forEach(t => t.setAttribute('aria-selected', t === tab));
+
+      const next = document.getElementById(tab.getAttribute('aria-controls'));
+      const current = [...panels].find(p => !p.hidden);
+      if (tl) tl.kill();
+
+      if (!window.gsap || reduceMotion.matches) {
+        swap(current, next);
+        return;
+      }
+
+      tl = gsap.timeline();
+      if (current) tl.to(current, { opacity: 0, y: -8, duration: 0.15, ease: 'power1.in' });
+      tl.add(() => swap(current, next))
+        .fromTo(next.children,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.06, clearProps: 'opacity,transform' });
     });
   });
 
