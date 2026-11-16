@@ -8,5 +8,6 @@
 | https://github.com/daleseo/korean-skills | ae12ba2 | MIT | `skills/humanizer` → `humanizer-ko`로 이름 변경 |
 | https://github.com/AgriciDaniel/claude-seo | 6be93f4 | MIT | `skills/*`, `schema/`, `data/`, `scripts/` (→ `seo/` 안), `agents/*.md` (hooks 제외) |
 | https://github.com/PleasePrompto/notebooklm-skill | c80722d | MIT | 저장소 전체 → `notebooklm` |
+| https://github.com/vercel-labs/skills | b716f9d | MIT | `skills/find-skills` |
 
 `.claude/skills/skill-buttons/`는 이 저장소에서 만든 버튼 패널 mod입니다.
